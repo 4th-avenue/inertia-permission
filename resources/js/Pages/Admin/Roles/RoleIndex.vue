@@ -8,7 +8,7 @@ import { Head } from '@inertiajs/vue3';
 
     <AdminLayout>
         <div class="py-4">
-            <h1>Welcome admin!</h1>
+            <h1>Roles Index Page</h1>
         </div>
     </AdminLayout>
 </template>
