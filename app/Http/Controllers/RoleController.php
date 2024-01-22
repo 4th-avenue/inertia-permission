@@ -51,15 +51,21 @@ class RoleController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $role = Role::findById($id);
+
+        return Inertia::render('Admin/Roles/Edit', [
+            'role' => new RoleResource($role)
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(RoleCreateRequest $request, string $id)
     {
-        //
+        $role = Role::findById($id);
+        $role->update($request->validated());
+        return to_route('roles.index');
     }
 
     /**
