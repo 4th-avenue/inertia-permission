@@ -1,41 +1,49 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 
-import Table from '@/Components/Table.vue';
-import TableRow from '@/Components/TableRow.vue';
-import TableHeaderCell from '@/Components/TableHeaderCell.vue';
-import TableDataCell from '@/Components/TableDataCell.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import InputLabel from '@/Components/InputLabel.vue';
+import InputError from '@/Components/InputError.vue';
+import TextInput from '@/Components/TextInput.vue';
 
-defineProps(['roles']);
+const form = useForm({
+    name: ""
+})
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="Create new role" />
 
     <AdminLayout>
         <div class="max-w-7xl mx-auto py-4">
             <div class="flex justify-between">
-                <h1>Roles Index Page</h1>
-                <Link :href="route('roles.create')" class="px-3 py-2 text-white font-semibold bg-indigo-500 hover:bg-indigo-700 rounded">New Role</Link>
+                <Link :href="route('roles.index')" class="px-3 py-2 text-white font-semibold bg-indigo-500 hover:bg-indigo-700 rounded">Back</Link>
             </div>
-            <div class="mt-6">
-                <Table>
-                    <template #header>
-                        <TableRow>
-                            <TableHeaderCell>ID</TableHeaderCell>
-                            <TableHeaderCell>Name</TableHeaderCell>
-                            <TableHeaderCell>Action</TableHeaderCell>
-                        </TableRow>
-                    </template>
-                    <template #default>
-                        <TableRow v-for="role in roles" :key="role.id" class="border-b">
-                            <TableDataCell>{{ role.id }}</TableDataCell>
-                            <TableDataCell>{{ role.name }}</TableDataCell>
-                            <TableDataCell>Edit/Delete</TableDataCell>
-                        </TableRow>
-                    </template>
-                </Table>
+            <div class="mt-6 max-w-md mx-auto">
+                <h1 class="text-2xl p-4">Create new role</h1>
+                <form @submit.prevent="form.post(route('roles.store'))">
+                    <div>
+                        <InputLabel for="name" value="Name" />
+
+                        <TextInput
+                            id="name"
+                            type="text"
+                            class="mt-1 block w-full"
+                            v-model="form.name"
+                            autofocus
+                            autocomplete="username"
+                        />
+
+                        <InputError class="mt-2" :message="form.errors.name" />
+                    </div>
+
+                    <div class="flex items-center mt-4">
+                        <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                            Create
+                        </PrimaryButton>
+                    </div>
+                </form>
             </div>
         </div>
     </AdminLayout>
