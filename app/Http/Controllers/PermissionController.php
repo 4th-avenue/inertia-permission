@@ -40,27 +40,22 @@ class PermissionController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Permission $permission): Response
     {
-        //
+        return Inertia::render('Admin/Permissions/Edit', [
+            'permission' => new PermissionResource($permission)
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PermissionCreateRequest $request, Permission $permission): RedirectResponse
     {
-        //
+        $permission->update($request->validated());
+        return to_route('permissions.index');
     }
 
     /**
