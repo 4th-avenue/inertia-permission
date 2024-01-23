@@ -7,6 +7,7 @@ use Inertia\Response;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Resources\RoleResource;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\RoleCreateRequest;
 
 class RoleController extends Controller
@@ -32,7 +33,7 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(RoleCreateRequest $request)
+    public function store(RoleCreateRequest $request): RedirectResponse
     {
         Role::create($request->validated());
         return to_route('roles.index');

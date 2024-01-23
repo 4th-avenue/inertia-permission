@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Spatie\Permission\Models\Permission;
 use App\Http\Resources\PermissionResource;
+use App\Http\Requests\PermissionCreateRequest;
 
 class PermissionController extends Controller
 {
@@ -31,9 +33,10 @@ class PermissionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PermissionCreateRequest $request): RedirectResponse
     {
-        //
+        Permission::create($request->validated());
+        return to_route('permissions.index');
     }
 
     /**
