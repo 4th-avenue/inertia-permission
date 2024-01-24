@@ -11,7 +11,7 @@ defineProps(['roles']);
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="Roles" />
 
     <AdminLayout>
         <div class="max-w-7xl mx-auto py-4">
