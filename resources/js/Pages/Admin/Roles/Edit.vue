@@ -6,6 +6,10 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import InputError from '@/Components/InputError.vue';
 import TextInput from '@/Components/TextInput.vue';
+import Table from '@/Components/Table.vue';
+import TableRow from '@/Components/TableRow.vue';
+import TableHeaderCell from '@/Components/TableHeaderCell.vue';
+import TableDataCell from '@/Components/TableDataCell.vue';
 
 const props = defineProps({
     role: {
@@ -28,8 +32,8 @@ const form = useForm({
             <div class="flex justify-between">
                 <Link :href="route('roles.index')" class="px-3 py-2 text-white font-semibold bg-indigo-500 hover:bg-indigo-700 rounded">Back</Link>
             </div>
-            <div class="mt-6 max-w-md mx-auto bg-slate-100 shadow-lg rounded-lg p-6">
-                <h1 class="text-2xl p-4">Update role</h1>
+            <div class="mt-6 max-w-6xl mx-auto bg-slate-100 shadow-lg rounded-lg p-6">
+                <h1 class="text-2xl font-semibold text-indigo-700">Update role</h1>
                 <form @submit.prevent="form.put(route('roles.update', role.id))">
                     <div class="mt-4">
                         <InputLabel for="name" value="Name" />
@@ -59,6 +63,29 @@ const form = useForm({
                         </PrimaryButton>
                     </div>
                 </form>
+            </div>
+            <div class="mt-6 max-w-6xl mx-auto bg-slate-100 shadow-lg rounded-lg p-6">
+                <h1 class="text-2xl font-semibold text-indigo-700">Permissions</h1>
+                <div class="bg-white mt-4">
+                    <Table>
+                        <template #header>
+                            <TableRow>
+                                <TableHeaderCell>ID</TableHeaderCell>
+                                <TableHeaderCell>Name</TableHeaderCell>
+                                <TableHeaderCell>Action</TableHeaderCell>
+                            </TableRow>
+                        </template>
+                        <template #default>
+                            <TableRow v-for="rolePermission in role.permissions" :key="rolePermission.id" class="border-b">
+                                <TableDataCell>{{ rolePermission.id }}</TableDataCell>
+                                <TableDataCell>{{ rolePermission.name }}</TableDataCell>
+                                <TableDataCell class="space-x-4">
+                                    <Link :href="route('permissions.destroy', rolePermission.id)" method="DELETE" as="button" class="text-red-400 hover:text-red-600">Delete</Link>
+                                </TableDataCell>
+                            </TableRow>
+                        </template>
+                    </Table>
+                </div>
             </div>
         </div>
     </AdminLayout>

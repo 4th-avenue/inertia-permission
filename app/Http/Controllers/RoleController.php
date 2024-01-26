@@ -47,6 +47,7 @@ class RoleController extends Controller
     public function edit(string $id): Response
     {
         $role = Role::findById($id);
+        $role->load('permissions');
 
         return Inertia::render('Admin/Roles/Edit', [
             'role' => new RoleResource($role),
@@ -64,7 +65,7 @@ class RoleController extends Controller
             'name' => $request->name
         ]);
         $role->syncPermissions($request->input('permissions'));
-        return to_route('roles.index');
+        return back();
     }
 
     /**
