@@ -80,7 +80,7 @@ const form = useForm({
                                 <TableDataCell>{{ rolePermission.id }}</TableDataCell>
                                 <TableDataCell>{{ rolePermission.name }}</TableDataCell>
                                 <TableDataCell class="space-x-4">
-                                    <Link :href="route('permissions.destroy', rolePermission.id)" method="DELETE" as="button" class="text-red-400 hover:text-red-600">Delete</Link>
+                                    <Link :href="route('roles.permissions.destroy', [role.id, rolePermission.id])" method="DELETE" as="button" class="text-red-400 hover:text-red-600" preserve-scroll>Revoke</Link>
                                 </TableDataCell>
                             </TableRow>
                         </template>
