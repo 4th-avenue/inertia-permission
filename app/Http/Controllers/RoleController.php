@@ -9,6 +9,8 @@ use Spatie\Permission\Models\Role;
 use App\Http\Resources\RoleResource;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\RoleCreateRequest;
+use Spatie\Permission\Models\Permission;
+use App\Http\Resources\PermissionResource;
 
 class RoleController extends Controller
 {
@@ -47,7 +49,8 @@ class RoleController extends Controller
         $role = Role::findById($id);
 
         return Inertia::render('Admin/Roles/Edit', [
-            'role' => new RoleResource($role)
+            'role' => new RoleResource($role),
+            'permissions' => PermissionResource::collection(Permission::all()),
         ]);
     }
 
@@ -57,7 +60,10 @@ class RoleController extends Controller
     public function update(RoleCreateRequest $request, string $id): RedirectResponse
     {
         $role = Role::findById($id);
-        $role->update($request->validated());
+        $role->update([
+            'name' => $request->name
+        ]);
+        $role->syncPermissions($request->input('permissions'));
         return to_route('roles.index');
     }
 

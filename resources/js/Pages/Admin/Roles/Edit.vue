@@ -10,12 +10,14 @@ import TextInput from '@/Components/TextInput.vue';
 const props = defineProps({
     role: {
         type: Object,
-        required: true
-    }
-})
+        required: true,
+    },
+    permissions: Array,
+});
 const form = useForm({
-    name: props.role.name
-})
+    name: props.role.name,
+    permissions: [],
+});
 </script>
 
 <template>
@@ -29,7 +31,7 @@ const form = useForm({
             <div class="mt-6 max-w-md mx-auto bg-slate-100 shadow-lg rounded-lg p-6">
                 <h1 class="text-2xl p-4">Update role</h1>
                 <form @submit.prevent="form.put(route('roles.update', role.id))">
-                    <div>
+                    <div class="mt-4">
                         <InputLabel for="name" value="Name" />
 
                         <TextInput
@@ -42,6 +44,13 @@ const form = useForm({
                         />
 
                         <InputError class="mt-2" :message="form.errors.name" />
+                    </div>
+
+                    <div class="mt-4">
+                        <InputLabel for="permissions" value="Permissions" />
+                        <select v-model="form.permissions" id="permissions" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" multiple>
+                            <option v-for="permission in permissions" :key="permission.id" :value="permission.id">{{ permission.name }}</option>
+                        </select>
                     </div>
 
                     <div class="flex items-center mt-4">
