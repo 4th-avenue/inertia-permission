@@ -7,8 +7,12 @@ import InputLabel from '@/Components/InputLabel.vue';
 import InputError from '@/Components/InputError.vue';
 import TextInput from '@/Components/TextInput.vue';
 
+defineProps({
+    permissions: Array,
+});
 const form = useForm({
-    name: ""
+    name: "",
+    permissions: [],
 })
 </script>
 
@@ -20,10 +24,10 @@ const form = useForm({
             <div class="flex justify-between">
                 <Link :href="route('roles.index')" class="px-3 py-2 text-white font-semibold bg-indigo-500 hover:bg-indigo-700 rounded">Back</Link>
             </div>
-            <div class="mt-6 max-w-md mx-auto bg-slate-100 shadow-lg rounded-lg p-6">
-                <h1 class="text-2xl p-4">Create new role</h1>
+            <div class="mt-6 max-w-6xl mx-auto bg-slate-100 shadow-lg rounded-lg p-6">
+                <h1 class="text-2xl font-semibold text-indigo-700">Create new role</h1>
                 <form @submit.prevent="form.post(route('roles.store'))">
-                    <div>
+                    <div class="mt-4">
                         <InputLabel for="name" value="Name" />
 
                         <TextInput
@@ -36,6 +40,13 @@ const form = useForm({
                         />
 
                         <InputError class="mt-2" :message="form.errors.name" />
+                    </div>
+
+                    <div class="mt-4">
+                        <InputLabel for="permissions" value="Permissions" />
+                        <select v-model="form.permissions" id="permissions" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" multiple>
+                            <option v-for="permission in permissions" :key="permission.id" :value="permission.id">{{ permission.name }}</option>
+                        </select>
                     </div>
 
                     <div class="flex items-center mt-4">
