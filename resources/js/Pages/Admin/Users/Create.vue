@@ -6,11 +6,18 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
+defineProps({
+    roles: Array,
+    permissions: Array,
+});
+
 const form = useForm({
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
+    roles: [],
+    permissions: []
 });
 
 const submit = () => {
@@ -85,6 +92,19 @@ const submit = () => {
                         />
         
                         <InputError class="mt-2" :message="form.errors.password_confirmation" />
+                    </div>
+
+                    <div class="mt-4">
+                        <InputLabel for="roles" value="Roles" />
+                        <select v-model="form.roles" id="roles" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" multiple>
+                            <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.name }}</option>
+                        </select>
+                    </div>
+                    <div class="mt-4">
+                        <InputLabel for="permissions" value="Permissions" />
+                        <select v-model="form.permissions" id="permissions" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" multiple>
+                            <option v-for="permission in permissions" :key="permission.id" :value="permission.id">{{ permission.name }}</option>
+                        </select>
                     </div>
         
                     <div class="flex items-center justify-end mt-4">
