@@ -105,7 +105,7 @@ const submit = () => {
                                 <TableDataCell>{{ userRole.id }}</TableDataCell>
                                 <TableDataCell>{{ userRole.name }}</TableDataCell>
                                 <TableDataCell class="space-x-4">
-                                    <Link href="" method="DELETE" as="button" class="text-red-400 hover:text-red-600" preserve-scroll>Revoke</Link>
+                                    <Link :href="route('users.roles.destroy', [user.id, userRole.id])" method="DELETE" as="button" class="text-red-400 hover:text-red-600" preserve-scroll>Revoke</Link>
                                 </TableDataCell>
                             </TableRow>
                         </template>
@@ -128,7 +128,7 @@ const submit = () => {
                                 <TableDataCell>{{ userPermission.id }}</TableDataCell>
                                 <TableDataCell>{{ userPermission.name }}</TableDataCell>
                                 <TableDataCell class="space-x-4">
-                                    <Link :href="route('roles.permissions.destroy', [user.id, userPermission.id])" method="DELETE" as="button" class="text-red-400 hover:text-red-600" preserve-scroll>Revoke</Link>
+                                    <Link :href="route('users.permissions.destroy', [user.id, userPermission.id])" method="DELETE" as="button" class="text-red-400 hover:text-red-600" preserve-scroll>Revoke</Link>
                                 </TableDataCell>
                             </TableRow>
                         </template>
