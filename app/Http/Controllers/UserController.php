@@ -8,9 +8,13 @@ use Inertia\Response;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
+use Spatie\Permission\Models\Role;
+use App\Http\Resources\RoleResource;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
+use Spatie\Permission\Models\Permission;
+use App\Http\Resources\PermissionResource;
 
 class UserController extends Controller
 {
@@ -57,8 +61,11 @@ class UserController extends Controller
      */
     public function edit(User $user): Response
     {
+        $user->load(['roles', 'permissions']);
         return Inertia::render('Admin/Users/Edit', [
-            'user' => new UserResource($user)
+            'user' => new UserResource($user),
+            'roles' => RoleResource::collection(Role::all()),
+            'permissions' => PermissionResource::collection(Permission::all())
         ]);
     }
 
@@ -69,7 +76,9 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|'.Rule::unique('users', 'email')->ignore($user)
+            'email' => 'required|string|lowercase|email|max:255|'.Rule::unique('users', 'email')->ignore($user),
+            'roles' => ['sometimes', 'array'],
+            'permissions' => ['sometimes', 'array'],
         ]);
 
         $user->update([
@@ -77,7 +86,10 @@ class UserController extends Controller
             'email' => $request->email,
         ]);
 
-        return to_route('users.index');
+        $user->syncRoles($request->input('roles'));
+        $user->syncPermissions($request->input('permissions'));
+
+        return back();
     }
 
     /**
