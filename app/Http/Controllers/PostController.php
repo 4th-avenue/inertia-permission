@@ -32,4 +32,24 @@ class PostController extends Controller
 
         return to_route('posts.index');
     }
+
+    public function edit(Post $post): Response
+    {
+        return Inertia::render('Admin/Posts/Edit', [
+            'post' => new PostResource($post),
+        ]); 
+    }
+
+    public function update(PostCreateRequest $request, Post $post): RedirectResponse
+    {
+        $post->update($request->validated());
+
+        return to_route('posts.index');
+    }
+
+    public function destroy(Post $post): RedirectResponse
+    {
+        $post->delete();
+        return back();
+    }
 }
